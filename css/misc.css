@@ -1,0 +1,9 @@
+/* Progressive fullscreen background image
+   http://css-tricks.com/3458-perfect-full-page-background-image/ */
+html {
+        background: url(images/bg.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+}

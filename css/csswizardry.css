@@ -1,0 +1,77 @@
+/* From @csswizardy 
+ * ==================================================== */
+
+/* Simple top-bottom gradient */
+div{
+	background:-webkit-gradient(linear, left top, left bottom, from(#fff), to(#000));
+	background:-webkit-linear-gradient(top, #fff, #000);
+	background:-moz-linear-gradient(top, #fff, #000);
+	background:-ms-linear-gradient(top, #fff, #000);
+	background:-o-linear-gradient(top, #fff, #000);
+	background:linear-gradient(top, #fff, #000);
+}
+
+/* Right angled quote on the end of a link */
+a:after{
+	content:" »";
+}
+
+/* Make colspan cells look pretty */
+table [colspan]{
+	text-align:center;
+}
+table [rowspan]{
+	vertical-align:middle;
+}
+/*
+Assuming IE has an 'implied' colspan of one on cells without an explicit colspan attribute, fix/undo it.
+See http://jsfiddle.net/csswizardry/UJJay/
+*/
+[colspan="1"]{
+    text-align:left;
+}
+[rowspan="1"]{
+    vertical-align:top;
+}
+
+/* Thicken the borders between table headings and table cells */
+thead tr:last-of-type th{
+	border-bottom-width:2px;
+}
+tbody th{
+	border-right-width:2px;
+}
+
+/* Robust paragraph indenting */
+p+p{
+	text-indent:2em;
+	margin-top:-1.5em;
+}
+
+/* Remove the margin from the last element in the fieldset--this makes our padding more consistent. */
+fieldset > :last-child{
+	margin:0;
+}
+
+/* Keep colons out of your markup */
+label:after{
+	content:":";
+}
+
+/* Nice UI touch on forms inputs */
+.text-input, /* Apply this class to inputs including type="text", type="email", type="password" etc */
+textarea{
+	cursor:pointer;
+}
+.text-input:active,
+.text-input:focus,
+textarea:active,
+textarea:focus{
+	cursor:text;
+}
+
+/* Create an all caps strong which inherits font-weight to keep consistency in multiple contexts. */
+strong.caps{
+	text-transform:uppercase;
+	font-weight:inherit;
+}
