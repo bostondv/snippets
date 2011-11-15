@@ -98,7 +98,7 @@ define('DISALLOW_FILE_EDIT', true);
 /**
  * Customize duration of auto save (default: 60)
  */
-define('AUTOSAVE_INTERVAL', 120)
+define('AUTOSAVE_INTERVAL', 120);
 
 /**
  * Relocate WordPress to a new URL
