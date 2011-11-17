@@ -1,44 +1,68 @@
+from __future__ import with_statement
 from fabric.api import *
 import datetime
 
+# Environments
+from environments import *
+
 # Submodules
-import deploy
+import wp
+import mysql as db
 import git
 import media
-import wordpress
-import mysql as db
 
-# Project Name
+# Globals
 env.app = 'project_name_here'
 
-# Variables
 env.git = 'git@pomelodesign.com'
 env.media = 'wp-content/uploads'
 env.dbpath = '%s/db' % (env.media)
 env.dbfile = '%s/latest.sql.gz' % (env.dbpath)
 
-# Development server
-@task
-def dev():
-	env.user = 'dev_username_here'
-	env.hosts = ['dev_domain_name_here']
-	env.dir = '/home/pomelo/webenv.apps/%s' % (env.app)
-	env.dbname = 'dev_database_name_here'
-	env.dbuser = 'dev_database_username_here'
-	env.dbpass = 'dev_database_password_here'
-	env.dbhost = 'localhost'
-
-# Production server
-@task
-def prod():
-	env.user = 'prod_username_here'
-	env.hosts = ['prod_domain_name_here']
-	env.dir = '/path/to/website/%s' % (env.app)
-	env.dbname = 'prod_database_name_here'
-	env.dbuser = 'prod_database_username_here'
-	env.dbpass = 'prod_database_password_here'
-	env.dbhost = 'localhost'
-
-# Define some constants
 now = datetime.datetime.now()
 env.timestamp = now.strftime('%Y%m%dT%H%M%S')
+
+# Create tmp dirs
+@task
+def bootstrap():
+	with cd(env.dir):
+		run('mkdir -p %s' % (env.media))
+		run('mkdir -p %s' % (env.dbpath))
+	run('mkdir -p ~/tmp')
+	local('mkdir -p ~/tmp')
+	local('mkdir -p %s' % (env.media))
+	run('db -p %s' % (env.dbpath))
+
+# First run install - automatically triggered by 'deploy' if needed
+@task
+def setup():
+	execute(bootstrap)
+	execute(git.commit)
+	execute(git.push)
+	run('git clone %s:%s.git %s' % (env.git, env.app, env.dir))
+	execute(wp.config)
+	execute(wp.htaccess)
+	execute(media.put)
+	execute(db.put)
+
+# Update local development from remote
+@task
+def get():
+	execute(git.commit_remote)
+	execute(git.push_remote)
+	execute(git.pull)
+	execute(media.get)
+	execute(db.get)
+
+# Deploy the website
+@task
+def put():
+	with settings(warn_only=True):
+		if run('test -d %s/.git' % (env.dir)).failed:
+			if run('test -f %s/index.html' % (env.dir)).succeeded:
+				run('rm %s/index.html' % (env.dir))
+			execute(setup)
+		else:
+			execute(git.commit)
+			execute(git.push)
+			execute(git.pull_remote)

@@ -1,14 +1,5 @@
 from fabric.api import *
 
-# Project Name
-env.app = 'project_name_here'
-
-# Variables
-env.git = 'git@pomelodesign.com'
-env.media = 'wp-content/uploads'
-env.dbpath = '%s/db' % (env.media)
-env.dbfile = '%s/latest.sql.gz' % (env.dbpath)
-
 # Development server
 @task
 def dev():
