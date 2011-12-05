@@ -113,8 +113,29 @@ def wp_bones(app, prefix):
 		print theme_path, 'already exists, skipping.'
 	else:
 		os.system(	'cd %s &&'
-					'git submodule add git://github.com/eddiemachado/bones-responsive.git wp-content/themes/%s' 
-					% (prefix, app))
+					'git submodule add git://github.com/eddiemachado/bones-responsive.git wp-content/themes/%s &&'
+					'git commit -am "adding bones responsive theme"' % (prefix, app))
+
+def wp_thematic(app, prefix):
+	print '*** Installing thematic ***'
+	theme_path = '%s/wp-content/themes/thematic' % (prefix)
+	if os.path.exists(theme_path):
+		print theme_path, 'already exists, skipping.'
+	else:
+		os.system(	'cd %s &&'
+					'git submodule https://github.com/iridia/thematic.git wp-content/themes/thematic &&'
+					'git commit -am "adding thematic theme"' % (prefix))
+
+def wp_thematic_child(app, prefix):
+	print '*** Installing thematic child ***'
+	theme_path = '%s/wp-content/themes/%s' % (prefix, app)
+	if os.path.exists(theme_path):
+		print theme_path, 'already exists, skipping.'
+	else:
+		os.system(	'wget "https://github.com/bostondv/thematic-child/tarball/master" -O ~/tmp/thematic-child.tar.gz &&'
+					'tar -C %s/wp-content/themes/ -xzf ~/tmp/thematic-child.tar/gz &&'
+					'mv %s/wp-content/themes/bostondv-thematic-child-* %s &&'
+					'git commit -am "adding thematic child theme"' % (prefix, prefix, prefix, theme_path))
 
 def gitosis(app, prefix, gitosis_path):
 	print '*** Creating Gitosis entries ***'
@@ -135,17 +156,17 @@ def gitosis(app, prefix, gitosis_path):
 					'git commit -am "Adding %s repository" &&'
 					'git push' % (gitosis_path, app))
 
-def git(app, prefix):
+def git_init(app, prefix):
 	print '*** Creating Git repository and pushing first commit ***'
 	os.system(	'cd %s &&'
-				'git init' % (prefix))
-	wp_gitignore(prefix)
-	wp_bones(app, prefix)
-	os.system(	'cd %s &&'
+				'git init &&'
 				'git add . &&'
 				'git commit -am "Initial project setup" &&'
-				'git remote add origin git@pomelodesign.com:%s.git &&'
-				'git push -u origin master' % (prefix, app))
+				'git remote add origin git@pomelodesign.com:%s.git' % (prefix, app))
+
+def git_push(prefix):
+	print '*** Git push ***'
+	os.system('cd %s && git push -u origin master' % (prefix))
 
 def db(app):
 	print '*** Creating MySQL database ***'
@@ -168,11 +189,15 @@ def hosts(app):
 		hosts_file.write(output)
 		hosts_file.close()
 
-def fabfile(app, prefix):
+def fabfile(prefix):
+	print '*** Installing fabfile ***'
+	os.system(	'cd %s &&'
+				'git submodule add git://github.com/bostondv/fabfile.git &&'
+				'git commit -am "adding fabfile"' % (prefix))
 	return
 
 def install(app, prefix, gitosis_path):
-	print '*** Installing new wordpress app:', app, 'at', prefix, '***'
+	print '*** Installing new wordpres-s app:', app, 'at', prefix, '***'
 	if os.path.exists(prefix):
 		print '%s already exists. Please re-run with a new path' % (prefix)
 		exit()
@@ -180,11 +205,14 @@ def install(app, prefix, gitosis_path):
 	wordpress(prefix)
 	wp_config(app, prefix)
 	wp_htaccess(prefix)
+	wp_gitignore(prefix)
 	db(app)
-	fabfile(app, prefix)
 	#hosts(app)
 	gitosis(app, prefix, gitosis_path)
-	git(app, prefix)
+	git_init(app, prefix)
+	fabfile(prefix)
+	wp_bones(app, prefix)
+	git_push(prefix)
 	print 'And we\'re done.', app, 'installed to', prefix, '. Go to http://' + app + '.local/ to complete installation.'
 
 # Execute the functions

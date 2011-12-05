@@ -10,7 +10,13 @@ having count(*) > 1
 and good_rows.min_id <> bad_rows.id
 
 # Find and replace URLS (for url migration)
-UPDATE wp_posts SET post_content = REPLACE (post_content, 'http://www.old-domain.com','http://www.new-domain.com');
-UPDATE wp_posts SET guid = replace(guid, 'http://www.old-domain.com','http://www.new-domain.com');
-UPDATE wp_postmeta SET meta_value = replace(meta_value, 'http://www.old-domain.com', 'http://www.new-domain.com');
-UPDATE wp_options SET option_value = replace(option_value, 'http://www.old-domain.com', 'http://www.new-domain.com');
+UPDATE wp_posts SET post_content = REPLACE (post_content, 'http://old.com','http://new.com');
+UPDATE wp_posts SET guid = REPLACE (guid, 'http://old.com','http://new.com');
+UPDATE wp_postmeta SET meta_value = REPLACE (meta_value, 'http://old.com', 'http://new.com');
+UPDATE wp_options SET option_value = REPLACE (option_value, 'http://old.com', 'http://new.com') WHERE option_name = 'home' OR option_name = 'siteurl';
+
+# Assign all articles by Author B to Author A
+UPDATE wp_posts SET post_author = 'new-author-id' WHERE post_author = 'old-author-id';
+
+# Delete all spam posts
+DELETE FROM wp_comments WHERE comment_approved = 'spam';
