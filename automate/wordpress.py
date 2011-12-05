@@ -211,7 +211,8 @@ def install(app, prefix, gitosis_path):
 	gitosis(app, prefix, gitosis_path)
 	git_init(app, prefix)
 	fabfile(prefix)
-	wp_bones(app, prefix)
+	wp_thematic(app, prefix)
+	wp_thematic_child(app, prefix)
 	git_push(prefix)
 	print 'And we\'re done.', app, 'installed to', prefix, '. Go to http://' + app + '.local/ to complete installation.'
 
