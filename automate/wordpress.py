@@ -123,7 +123,7 @@ def wp_thematic(app, prefix):
 		print theme_path, 'already exists, skipping.'
 	else:
 		os.system(	'cd %s &&'
-					'git submodule https://github.com/iridia/thematic.git wp-content/themes/thematic &&'
+					'git submodule add https://github.com/iridia/thematic.git wp-content/themes/thematic &&'
 					'git commit -am "adding thematic theme"' % (prefix))
 
 def wp_thematic_child(app, prefix):
@@ -133,9 +133,36 @@ def wp_thematic_child(app, prefix):
 		print theme_path, 'already exists, skipping.'
 	else:
 		os.system(	'wget "https://github.com/bostondv/thematic-child/tarball/master" -O ~/tmp/thematic-child.tar.gz &&'
-					'tar -C %s/wp-content/themes/ -xzf ~/tmp/thematic-child.tar/gz &&'
+					'tar -C %s/wp-content/themes/ -xzf ~/tmp/thematic-child.tar.gz &&'
 					'mv %s/wp-content/themes/bostondv-thematic-child-* %s &&'
-					'git commit -am "adding thematic child theme"' % (prefix, prefix, prefix, theme_path))
+					'cd %s &&'
+					'git add . &&'
+					'git commit -am "adding thematic child theme"' % (prefix, prefix, theme_path, prefix))
+
+def wp_hybrid(app, prefix):
+	print '*** Installing hybrid ***'
+	theme_path = '%s/wp-content/themes/hybrid' % (prefix)
+	if os.path.exists(theme_path):
+		print theme_path, 'already exists, skipping.'
+	else:
+		os.system(	'wget "http://wordpress.org/extend/themes/download/hybrid.1.0.zip" -O ~/tmp/hybrid.zip &&'
+					'tar -C %s/wp-content/themes/ -xzf ~/tmp/hybrid.zip &&'
+					'cd %s &&'
+					'git add . &&'
+					'git commit -am "adding hybrid theme"' % (prefix, prefix))
+
+def wp_hybrid_skeleton(app, prefix):
+	print '*** Installing hyrbid child skeleton ***'
+	theme_path = '%s/wp-content/themes/%s' % (prefix, app)
+	if os.path.exists(theme_path):
+		print theme_path, 'already exists, skipping.'
+	else:
+		os.system(	'wget "https://github.com/bostondv/hybrid-child/tarball/master" -O ~/tmp/hybrid-child.tar.gz &&'
+					'tar -C %s/wp-content/themes/ -xzf ~/tmp/hybrid-child.tar.gz &&'
+					'mv %s/wp-content/themes/bostondv-hybrid-child-* %s &&'
+					'cd %s &&'
+					'git add . &&'
+					'git commit -am "adding hybrid child skeleton theme"' % (prefix, prefix, theme_path, prefix))
 
 def gitosis(app, prefix, gitosis_path):
 	print '*** Creating Gitosis entries ***'
@@ -211,10 +238,12 @@ def install(app, prefix, gitosis_path):
 	gitosis(app, prefix, gitosis_path)
 	git_init(app, prefix)
 	fabfile(prefix)
-	wp_thematic(app, prefix)
-	wp_thematic_child(app, prefix)
+	wp_hybrid(app, prefix)
+	wp_hybrid_skeleton(app, prefix)
 	git_push(prefix)
-	print 'And we\'re done.', app, 'installed to', prefix, '. Go to http://' + app + '.local/ to complete installation.'
+	print '*** And we\'re done.', app, 'installed to', prefix + '.\n'
+	print '*** Go to http://' + app + '.local/ to complete installation.\n' 
+	print 'Don\'t forget to add', app, 'to your hosts file!'
 
 # Execute the functions
 install(app, prefix, gitosis_path)
