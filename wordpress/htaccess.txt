@@ -502,6 +502,12 @@ RewriteRule ^wp-includes/theme-compat/ - [F,L]
 
 
 # ----------------------------------------------------------------------
+# Limit size of request body
+# ----------------------------------------------------------------------
+LimitRequestBody 10240000
+
+
+# ----------------------------------------------------------------------
 # 5G FIREWALL from PerishablePress.com
 # ----------------------------------------------------------------------
 
@@ -536,7 +542,6 @@ RewriteRule ^wp-includes/theme-compat/ - [F,L]
  SetEnvIfNoCase User-Agent "Purebot" keep_out
  SetEnvIfNoCase User-Agent "PostRank" keep_out
  SetEnvIfNoCase User-Agent "archive.org_bot" keep_out
- SetEnvIfNoCase User-Agent "msnbot.htm)._" keep_out
  <Limit GET POST PUT>
   Order Allow,Deny
   Allow from all
