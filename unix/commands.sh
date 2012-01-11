@@ -16,3 +16,6 @@ find . \( -name "*.php" \) -exec grep -Hn "[[:blank:]+]eval(base64_decode(.*));"
 
 #Instant server for the current directory
 alias server='open http://localhost:8000 && python -m SimpleHTTPServer'	
+
+# Webfaction memory usage
+ps -u pomelo -o rss,etime,pid,command

@@ -294,6 +294,7 @@ FileETag None
 <IfModule mod_rewrite.c>
   Options +FollowSymlinks
   RewriteEngine On
+  RewriteBase /
 </IfModule>
 
 
@@ -302,8 +303,6 @@ FileETag None
 # ----------------------------------------------------------------------
 
 <IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteBase /
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -452,21 +451,21 @@ ServerSignature Off
 </FilesMatch>
 
 #PROTECT wp-config.php
-<files wp-config.php>
+<Files wp-config.php>
   order allow,deny
   deny from all
-</files>
+</Files>
 
-<files readme.html>
+<Files readme.html>
   order allow,deny
   deny from all
-</files>
+</Files>
 
 # PROTECT .htaccess
-<files .htaccess>
+<Files .htaccess>
   order allow,deny
   deny from all
-</files>
+</Files>
 
 # PROTECT install.php
 <Files install.php>
@@ -475,13 +474,24 @@ ServerSignature Off
  Satisfy all
 </Files>
 
+# PROTECT php.ini
+<Files php.ini>
+ Order Allow,Deny
+ Deny from all
+ Satisfy all
+</Files>
+
+# PROTECT fabfile
+<Directory /fabfile>
+ Order Allow,Deny
+ Deny from all
+<Directory>
+
 
 # ----------------------------------------------------------------------
 # Protect include only files
 # ----------------------------------------------------------------------
 
-RewriteEngine On
-RewriteBase /
 RewriteRule ^wp-admin/includes/ - [F,L]
 RewriteRule !^wp-includes/ - [S=3]
 RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
@@ -513,9 +523,7 @@ LimitRequestBody 10240000
 
 # 5G:[QUERY STRINGS]
 <IfModule mod_rewrite.c>
- RewriteEngine On
- RewriteBase /
- RewriteCond %{QUERY_STRING} (environ|localhost|mosconfig|scanner) [NC,OR]
+ RewriteCond %{QUERY_STRING} (environ|localhost|mosconfig) [NC,OR]
  RewriteCond %{QUERY_STRING} (menu|mod|path|tag)\=\.?/? [NC,OR]
  RewriteCond %{QUERY_STRING} boot\.ini  [NC,OR]
  RewriteCond %{QUERY_STRING} echo.*kae  [NC,OR]
@@ -542,6 +550,8 @@ LimitRequestBody 10240000
  SetEnvIfNoCase User-Agent "Purebot" keep_out
  SetEnvIfNoCase User-Agent "PostRank" keep_out
  SetEnvIfNoCase User-Agent "archive.org_bot" keep_out
+ SetEnvIfNoCase User-Agent "Ezooms" keep_out
+ SetEnvIfNoCase User-Agent "MJ12bot" keep_out
  <Limit GET POST PUT>
   Order Allow,Deny
   Allow from all
