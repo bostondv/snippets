@@ -485,7 +485,7 @@ ServerSignature Off
 <Directory /fabfile>
  Order Allow,Deny
  Deny from all
-<Directory>
+</Directory>
 
 
 # ----------------------------------------------------------------------
