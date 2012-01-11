@@ -481,12 +481,6 @@ ServerSignature Off
  Satisfy all
 </Files>
 
-# PROTECT fabfile
-<Directory /fabfile>
- Order Allow,Deny
- Deny from all
-</Directory>
-
 
 # ----------------------------------------------------------------------
 # Protect include only files
