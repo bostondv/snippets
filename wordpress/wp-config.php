@@ -52,7 +52,7 @@ define('DB_COLLATE', '');
  * You can have multiple installations in one database if you give each a unique
  * prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = 'wp_';
+$table_prefix  = 'wp_pmlo_';
 
 /**
  * WordPress Localized Language, defaults to English.
@@ -99,13 +99,6 @@ define('DISALLOW_FILE_EDIT', true);
  * Customize duration of auto save (default: 60)
  */
 define('AUTOSAVE_INTERVAL', 120);
-
-/**
- * Relocate WordPress to a new URL
- * Enable and go to wp-login.php
- * Do not leave this enabled
- */
-define('RELOCATE', false);
 
 /* That's all, stop editing! Happy blogging. */
 
