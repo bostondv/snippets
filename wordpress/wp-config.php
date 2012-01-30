@@ -44,8 +44,6 @@ define('DB_COLLATE', '');
  */
 //salt
 
-/**#@-*/
-
 /**
  * WordPress Database Table prefix.
  *

@@ -18,24 +18,10 @@ Allow: /wp-content/uploads
 
 # Google Image
 User-agent: Googlebot-Image
+Disallow:
 Allow: /*
-Disallow: /cgi-bin
-Disallow: /wp-admin
-Disallow: /wp-includes
-Disallow: /trackback
-Disallow: /comments
 
 # Google AdSense
 User-agent: Mediapartners-Google*
 Disallow:
 Allow: /*
-
-# Internet Archiver Wayback Machine
-User-agent: ia_archiver
-Disallow: /
-
-# digg mirror
-User-agent: duggmirror
-Disallow: /
-
-Sitemap: http://www.YOUR_URL_HERE.com/sitemap.xml
