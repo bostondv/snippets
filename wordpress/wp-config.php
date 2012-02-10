@@ -74,7 +74,7 @@ define('WP_DEBUG', false);
 /**
  * Enable caching
  */
-define('WP_CACHE', false);
+define('WP_CACHE', true);
 
 /**
  * Automatically set the site and home url to the address of the host
