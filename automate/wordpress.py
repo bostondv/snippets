@@ -30,18 +30,18 @@ def replace_all(data, dic):
 
 def wordpress(prefix):
 	print '*** Downloading and unpacking WordPress source ***'
-	os.system(	'mkdir -p ~/wptmp &&'
-				'cd ~/wptmp &&'
+	os.system(	'mkdir -p ~/tmp/wp &&'
+				'cd ~/tmp/wp &&'
 				'curl -O http://wordpress.org/latest.tar.gz &&'
 				'tar -xzf latest.tar.gz &&'
 				'cp -r wordpress/ %s &&'
-				'rm -r ~/wptmp'
+				'rm -r ~/tmp/wp'
 				% (prefix))
 
 def wp_config(app, prefix):
 	print '*** Creating optimized and preconfigured wp-config ***'
-	db_username = 'root'
-	db_password = 'pom889DV'
+	db_username = 'pomelo'
+	db_password = 'b4rwBoTKKch6An'
 	db_name = app.replace('-', '')
 	db_host = 'localhost'
 
@@ -130,7 +130,9 @@ def hosts(app):
 def fabfile(prefix):
 	print '*** Installing fabfile ***'
 	os.system(	'cd %s &&'
-				'git submodule add git://github.com/bostondv/fabfile.git &&'
+				'git clone git://github.com/bostondv/fabfile.git &&'
+				'rm -rf fabfile/.git &&'
+				'git add . &&'
 				'git commit -am "adding fabfile"' % (prefix))
 	return
 
@@ -145,16 +147,12 @@ def install(app, prefix):
 	#wp_htaccess(prefix)
 	wp_gitignore(prefix)
 	db(app)
-	#hosts(app)
-	#gitosis(app, prefix, gitosis_path)
 	git_init(app, prefix)
 	fabfile(prefix)
-	#wp_hybrid(app, prefix)
-	#wp_hybrid_skeleton(app, prefix)
-	#git_push(prefix)
 	print '*** And we\'re done.', app, 'installed to', prefix + '.\n'
 	print '*** Go to http://' + app + '.local/ to complete installation.\n' 
-	print 'Don\'t forget to add', app + '.local to your hosts file!'
+	print 'Don\'t forget to add', app + '.local to your hosts file!\n'
+	print 'You may also want to install your own theme and add a git remote'
 
 # Execute the functions
 install(app, prefix)
