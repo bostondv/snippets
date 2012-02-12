@@ -297,18 +297,6 @@ FileETag None
   RewriteBase /
 </IfModule>
 
-
-# ----------------------------------------------------------------------
-# Standard WordPress rewrite
-# ----------------------------------------------------------------------
-
-<IfModule mod_rewrite.c>
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
-</IfModule>
-
 # ----------------------------------------------------------------------
 # W3 Total Cache
 # ----------------------------------------------------------------------
@@ -367,6 +355,17 @@ RewriteRule . /index.php [L]
     RewriteRule .* "/wp-content/w3tc/pgcache/%{REQUEST_URI}/_index%{ENV:W3TC_UA}%{ENV:W3TC_REF}%{ENV:W3TC_SSL}.html%{ENV:W3TC_ENC}" [L]
 </IfModule>
 # END W3TC Page Cache core
+
+# ----------------------------------------------------------------------
+# Standard WordPress rewrite
+# ----------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
 
 # ----------------------------------------------------------------------
 # Suppress or force the "www." at the beginning of URLs
