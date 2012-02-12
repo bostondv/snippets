@@ -40,8 +40,8 @@ def wordpress(prefix):
 
 def wp_config(app, prefix):
 	print '*** Creating optimized and preconfigured wp-config ***'
-	db_username = 'pomelo'
-	db_password = 'b4rwBoTKKch6An'
+	db_username = 'root'
+	db_password = 'jjGq6cinRXU7YQ'
 	db_name = app.replace('-', '')
 	db_host = 'localhost'
 
@@ -146,9 +146,9 @@ def install(app, prefix):
 	wp_config(app, prefix)
 	#wp_htaccess(prefix)
 	wp_gitignore(prefix)
-	db(app)
-	git_init(app, prefix)
 	fabfile(prefix)
+	git_init(app, prefix)
+	db(app)
 	print '*** And we\'re done.', app, 'installed to', prefix + '.\n'
 	print '*** Go to http://' + app + '.local/ to complete installation.\n' 
 	print 'Don\'t forget to add', app + '.local to your hosts file!\n'
