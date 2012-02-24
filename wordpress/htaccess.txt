@@ -344,7 +344,7 @@ FileETag None
     RewriteRule .* - [E=W3TC_ENC:_gzip]
     RewriteCond %{REQUEST_METHOD} !=POST
     RewriteCond %{QUERY_STRING} =""
-    RewriteCond %{HTTP_HOST} =friedmaninvestmentgroup.com
+    RewriteCond %{HTTP_HOST} =bungalow7.net
     RewriteCond %{REQUEST_URI} \/$ [OR]
     RewriteCond %{REQUEST_URI} (sitemap(_index)?\.xml(\.gz)?|[a-z0-9_\-]+-sitemap([0-9]+)?\.xml(\.gz)?) [NC]
     RewriteCond %{REQUEST_URI} !(\/wp-admin\/|\/xmlrpc.php|\/wp-(app|cron|login|register|mail)\.php|\/feed\/|wp-.*\.php|index\.php) [NC,OR]
@@ -360,12 +360,16 @@ FileETag None
 # Standard WordPress rewrite
 # ----------------------------------------------------------------------
 
+# BEGIN WordPress
 <IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
 RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
 </IfModule>
+# END WordPress
 
 # ----------------------------------------------------------------------
 # Suppress or force the "www." at the beginning of URLs
